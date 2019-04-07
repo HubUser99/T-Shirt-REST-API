@@ -1,0 +1,1 @@
+INDEX VERSION 1.127+U:\Databases and Open Interfaces\RESTful\tshirt\.metadata\.plugins\org.eclipse.jdt.core

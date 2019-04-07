@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>MyJSON</title>
+</head>
+<body>
+    <div class="container">
+        <div id="list"></div>
+    </div>
+    <div class="container p-5">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input id="name" type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="basic-addon1">
+            <input id="email" type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1">
+			<input id="countryid" type="number" class="form-control" placeholder="Country ID" aria-label="Country ID" aria-describedby="basic-addon1">
+            <input id="cityid" type="number" class="form-control" placeholder="City ID" aria-label="City ID" aria-describedby="basic-addon1">
+			<input id="address" type="text" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1">
+            <input id="mobile" type="text" class="form-control" placeholder="Mobile" aria-label="Mobile" aria-describedby="basic-addon1">
+            <button type="button" class="btn btn-primary" onclick="putData()">Primary</button>
+        </div>
+    </div>
+    
+    <script>
+        let list = [];
+        
+        function putData() {
+            const data = {};
+            data.name = document.getElementById("name").value;
+            data.email = document.getElementById("email").value;
+			data.countryid = document.getElementById("countryid").value;
+            data.cityid = document.getElementById("cityid").value;
+			data.address = document.getElementById("address").value;
+            data.mobile = document.getElementById("mobile").value;
+            var jsonArray =[]; //here we create a JavaScript array with [] syntax
+            jsonArray.push(data); //add the object into the array
+            console.log(JSON.stringify(jsonArray)); //convert the array to string and print to console
+            list.push(`
+            <div class="row text-center h5 p-5">
+                <div class="col">` + data.name + `</div>
+				<div class="col">` + data.email + `</div>
+                <div class="col">` + data.countryid + `</div>
+                <div class="col">` + data.cityid + `</div>
+				<div class="col">` + data.address + `</div>
+                <div class="col">` + data.mobile + `</div>
+            </div>`
+            );
+            
+            document.getElementById("list").innerHTML += list[list.length - 1];
+            
+            
+            fetch('/customerid/', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res=>res.json())
+            .then(res => console.log(res));
+        }
+    </script>
+</body>
+</html>

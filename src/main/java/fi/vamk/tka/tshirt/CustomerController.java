@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController {
 	@Autowired
 	private CustomerRepository customerRepostitory;
-	@RequestMapping("/customers")
+	@RequestMapping(value = "/customers", method = RequestMethod.GET,produces={"application/json","application/xml"})
 	Iterable<Customer> customers(){
 		return customerRepostitory.findAll();
 	}
