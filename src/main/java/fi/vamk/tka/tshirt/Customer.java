@@ -17,11 +17,21 @@ public class Customer implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
+	private String name;
+
 	private String email;
 
-	private String mobile;
+	@ManyToOne
+	@JoinColumn(name="countryid")
+	private Country countryid;
 
-	private String name;
+	@ManyToOne
+	@JoinColumn(name="cityid")
+	private City cityid;
+
+	private String address;
+
+	private String mobile;
 
 	public Customer() {
 	}
@@ -57,5 +67,49 @@ public class Customer implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	/**
+	 * @return the countryid
+	 */
+	public Country getCountryid() {
+		return countryid;
+	}
+
+	/**
+	 * @param countryid the countryid to set
+	 */
+	public void setCountryid(Country countryid) {
+		this.countryid = countryid;
+	}
+
+	/**
+	 * @return the cityid
+	 */
+	public City getCityid() {
+		return cityid;
+	}
+
+	/**
+	 * @param cityid the cityid to set
+	 */
+	public void setCityid(City cityid) {
+		this.cityid = cityid;
+	}
+
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
 
 }

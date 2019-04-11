@@ -9,9 +9,6 @@
     <title>MyJSON</title>
 </head>
 <body>
-    <div class="container">
-        <div id="list"></div>
-    </div>
     <div class="container p-5">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -23,46 +20,65 @@
             <input id="cityid" type="number" class="form-control" placeholder="City ID" aria-label="City ID" aria-describedby="basic-addon1">
 			<input id="address" type="text" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="basic-addon1">
             <input id="mobile" type="text" class="form-control" placeholder="Mobile" aria-label="Mobile" aria-describedby="basic-addon1">
+            <button type="button" class="btn btn-primary" onclick="putData(['name', 'email', 'countryid', 'cityid', 'address', 'mobile'])">Primary</button>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input id="statusid" type="text" class="form-control" placeholder="Status" aria-label="Status" aria-describedby="basic-addon1">
+            <input id="orderquantity" type="text" class="form-control" placeholder="Order Quantity" aria-label="Order Quantity" aria-describedby="basic-addon1">
+			<input id="customerid" type="number" class="form-control" placeholder="Customer" aria-label="Customer" aria-describedby="basic-addon1">
+            <input id="orderdate" type="number" class="form-control" placeholder="Order Date" aria-label="Order Date" aria-describedby="basic-addon1">
             <button type="button" class="btn btn-primary" onclick="putData()">Primary</button>
         </div>
+    </div>
+
+    <div class="container">
+        <div id="list"></div>
     </div>
     
     <script>
         let list = [];
         
-        function putData() {
+        function putData(items) {
+            console.log(items);
+
             const data = {};
-            data.name = document.getElementById("name").value;
+            /*data.name = document.getElementById("name").value;
             data.email = document.getElementById("email").value;
 			data.countryid = document.getElementById("countryid").value;
             data.cityid = document.getElementById("cityid").value;
 			data.address = document.getElementById("address").value;
-            data.mobile = document.getElementById("mobile").value;
+            data.mobile = document.getElementById("mobile").value;*/
+            
+            list.push('<div class="row text-center h5 p-5">');
+
+            for (let i = 0; i < items.length; i++) {
+                console.log(items[i].substring(items[i].length-2, items[i].length));
+                if (!items[i].substring(items[i].length-2, items[i].length).localeCompare("id")) {
+                    data[items[i]] = {id: document.getElementById(items[i]).value};
+                } else {
+                    data[items[i]] = document.getElementById(items[i]).value;
+                }
+                list.push('<div class="col">' + data[items[i]] + '</div>');
+            }
+
             var jsonArray =[]; //here we create a JavaScript array with [] syntax
             jsonArray.push(data); //add the object into the array
             console.log(JSON.stringify(jsonArray)); //convert the array to string and print to console
-            list.push(`
-            <div class="row text-center h5 p-5">
-                <div class="col">` + data.name + `</div>
-				<div class="col">` + data.email + `</div>
-                <div class="col">` + data.countryid + `</div>
-                <div class="col">` + data.cityid + `</div>
-				<div class="col">` + data.address + `</div>
-                <div class="col">` + data.mobile + `</div>
-            </div>`
-            );
-            
+
             document.getElementById("list").innerHTML += list[list.length - 1];
+
+            list.push('<div class="row text-center h5 p-5">');
             
-            
-            fetch('/customerid/', {
+            fetch('/customer/', {
                 method: 'post',
+                body: JSON.stringify(data),
                 headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify(data)
+                    "Content-Type": "application/json",
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                }
             })
             .then(res=>res.json())
             .then(res => console.log(res));
